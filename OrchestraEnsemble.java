@@ -1,8 +1,3 @@
-import java.util.Iterator;
-import java.util.List;
-import java.util.ArrayList;
-
-
 public class OrchestraEnsemble extends Ensemble {
     private final int VIOLINIST_ROLE = 1;
     private final int CELLIST_ROLE = 2;
@@ -15,9 +10,11 @@ public class OrchestraEnsemble extends Ensemble {
       
         
     }
+    @Override
     public void showEnsemble(){
                 
-        OrchestraFactory factory = new OrchestraFactory();
+        // OrchestraFactory factory = new OrchestraFactory();
+        EnsembleFactory factory = EnsembleFactoryRegistry.getFactory(this);
         System.out.println(factory.getEnsembleType() + " " + super.getName()+" (" + super.getEnsembleID() + ")");
         factory.showEnsembleInfo(this);
         //int[] roleValue = factory.getAllRoles(this);

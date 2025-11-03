@@ -75,11 +75,12 @@ public class MEMSManager {
                     System.out.println("Invalid command. Please try again.");
             }
             if(currentEnsemble!=null) {
-                  if(currentEnsemble instanceof OrchestraEnsemble) {
-                    factory = new OrchestraFactory();
-                } else if (currentEnsemble instanceof JazzBandEnsemble) {
-                    factory = new JazzBandFactory();
-                }
+                //   if(currentEnsemble instanceof OrchestraEnsemble) {
+                //     factory = new OrchestraFactory();
+                // } else if (currentEnsemble instanceof JazzBandEnsemble) {
+                //     factory = new JazzBandFactory();
+                // }
+                factory = EnsembleFactoryRegistry.getFactory(currentEnsemble);
                 System.out.println("\nThe current ensemble (" + factory.getEnsembleType() + ") is " + currentEnsemble.getEnsembleID() + " " + currentEnsemble.getName() + ".");
             }
             System.out.print("\nPlease enter command [ c | s | a | m | d | se | sa | cn | u | r | l | x ] :- ");

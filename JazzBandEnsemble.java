@@ -14,10 +14,10 @@ public class JazzBandEnsemble extends Ensemble{
       
           
     }
-
+    @Override
     public void showEnsemble(){
-      
-        JazzBandFactory factory = new JazzBandFactory();
+
+        EnsembleFactory factory = EnsembleFactoryRegistry.getFactory(this);
         System.out.println(factory.getEnsembleType() + " " + super.getName()+" (" + super.getEnsembleID() + ")");
         factory.showEnsembleInfo(this);
         // int[] roleValue = factory.getAllRoles(this);
