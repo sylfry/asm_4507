@@ -1,9 +1,19 @@
-import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class JazzBandFactory implements EnsembleFactory {
+    private final int[] ROLES = {1, 2, 3};
+      private final Map<Integer,String> ROLE_NAMES = new HashMap<>();
+
+    public JazzBandFactory() {
+        ROLE_NAMES.put(1, "Pianist");
+        ROLE_NAMES.put(2, "Saxophonist");
+        ROLE_NAMES.put(3, "Drummer");
+    }
+
     @Override
     public Ensemble creatEnsemble(String id) {
         return new JazzBandEnsemble(id);
@@ -11,57 +21,47 @@ public class JazzBandFactory implements EnsembleFactory {
 
     @Override
     public Musician createMusician(String id) {
-        return new Musician(id);
+        Musician m = new Musician(id);
+        return m;
     }
 
     @Override
     public boolean isValidRole(int role) {
-        return role >= 1 && role <= 3;
+        for(int r: ROLES) {
+            if(r == role) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public String getRoleName(int role) {
-        switch(role) {
-            case 1:
-                return "Pianist";
-            case 2:
-                return "Saxophonist";
-            case 3:
-                return "Drummer";
-
-            default:
-                return "Unknown Role";
-        }
+       return ROLE_NAMES.getOrDefault(role, "Unknown Role");
     }
     @Override
     public String showRoleName() {
-        return "(1 = pianist | 2 = saxophonist | 3 = drummer)";   
+          StringBuilder sb = new StringBuilder("(");
+        for (int i = 0; i < ROLES.length; i++) {
+            int r = ROLES[i];
+            sb.append(r).append(" = ").append(getRoleName(r));
+            if (i+1 < ROLES.length) sb.append(" | ");
+        }
+        sb.append(")");
+        return sb.toString(); 
     }
         @Override
-    public int[] getAllRoles(Ensemble ensemble) {
-        
-        int[] roleValues = new int[ensemble.getClass().getDeclaredFields().length];
-        int idx = 0;
-        for(Field field : ensemble.getClass().getDeclaredFields()) {
-            if (field.getName().contains("ROLE")) {
-                field.setAccessible(true); // 如果是 private
-                try {
-                    roleValues[idx++] = (int) field.get(ensemble);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return roleValues;
+    public int[] getAllRoles() {
+             return ROLES.clone();  //ROLES是数组，引用类型属于可变对象，返回副本更安全
     }
     @Override
     public String getEnsembleType() {
         return "Jazz Band Ensemble";
     }
-     @Override
+    @Override
     public void showEnsembleInfo(Ensemble ensemble) {
-    
-     int[] roleValue = getAllRoles(ensemble);
+
+     int[] roleValue = getAllRoles();
 
      for(int i=0;i<roleValue.length;i++) {
         String roleName = getRoleName(roleValue[i]);

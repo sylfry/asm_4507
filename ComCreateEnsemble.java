@@ -15,20 +15,33 @@ public class ComCreateEnsemble implements Command {
 
     @Override
     public void execute() {
-        createdEnsemble = factory.creatEnsemble(ensembleId);
-        createdEnsemble.setName(ensembleName);
-        ensembles.add(createdEnsemble);
-        if (factory instanceof OrchestraFactory) {
-            System.out.println("Orchestra ensemble is created.");
-        } else if (factory instanceof JazzBandFactory) {
-            System.out.println("Jazz band ensemble is created.");
+        if (createdEnsemble == null) {
+            createdEnsemble = factory.creatEnsemble(ensembleId);
+            createdEnsemble.setName(ensembleName);
         }
-        System.out.println("Current ensemble is changed to " + ensembleId + ".");
+        // Ensure the same instance is (re-)added to the ensembles list on redo
+        if (!ensembles.contains(createdEnsemble)) {
+            ensembles.add(createdEnsemble);
+        }
+        System.out.println("\n" + factory.getEnsembleType() + " " + createdEnsemble.getEnsembleID() + " is created.");
+       // System.out.println("Current ensemble is changed to " + ensembleId + ".");
     }
 
     @Override
     public void undo() {
+        //只是从列表中移除，并不销毁对象
         ensembles.remove(createdEnsemble);
-        System.out.println("Ensemble is removed.");
+       // System.out.println("Ensemble is removed.");
     }
+    public Ensemble getCreatedEnsemble() {
+        return createdEnsemble;
+    }
+    @Override
+    public Ensemble getEnsemble() {
+        return createdEnsemble;
+    }
+    @Override                                                       
+    public String description() {
+        return "Create " +factory.getEnsembleType()+", "+ ensembleId + ", " + ensembleName;
+}
 }

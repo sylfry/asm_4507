@@ -11,13 +11,21 @@ public class ComDeleteMusician implements Command {
     @Override
     public void execute() {
         currentEnsemble.dropMusician(deletedMusician);
-        System.out.println("Musician is deleted.");
+        System.out.println("\nMusician is deleted.");
     }
 
     @Override
     public void undo() {
         currentEnsemble.addMusician(deletedMusician);
-        System.out.println("Restored musician " + deletedMusician.getMID() + " to ensemble " + currentEnsemble.getEnsembleID() + ".");
+        //System.out.println("\nRestored musician " + deletedMusician.getMID() + " to ensemble " + currentEnsemble.getEnsembleID() + ".");
     }
-    
+    public Ensemble getEnsemble() {
+        return currentEnsemble;
+    }
+
+    @Override                                                       
+    public String description() {
+     
+        return "Delete musician, " + deletedMusician.getMID(); 
+}
 }

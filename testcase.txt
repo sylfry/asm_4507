@@ -1,0 +1,84 @@
+c
+o
+E001
+SYO
+a
+m001, Chole Chua
+1
+a
+m002, Mischa Maisky
+2
+se
+c
+j
+E102
+BLUE NOTE
+a
+m101, Herbie Hancock
+1
+a
+m102, John Coltrane
+2
+a
+m103, Buddy Rich
+3
+sa
+s
+E001
+a
+m003, Joshua Bell
+1
+se
+m
+m001
+2
+se
+d
+m001
+se
+cn
+HSO
+se
+l
+u
+se
+u
+se
+u
+se
+u
+se
+u
+l
+r
+r
+s
+E102
+se
+c
+o
+E001
+DUPLICATE
+c
+o
+E300
+TEMP BAND
+a
+m300, Sam Solo
+1
+l
+u
+u
+l
+r
+r
+s
+E300
+se
+s
+E999
+a
+m999, Ghost
+1
+l
+x

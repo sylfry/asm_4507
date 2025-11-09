@@ -13,4 +13,10 @@ public class ComShowEnsemble implements Command {
     public void undo() {
         // No undo action for showing ensemble
 }
+    @Override                                                       
+    public String description() {
+        return "";
+    }
+
+
 }

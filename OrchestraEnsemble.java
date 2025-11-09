@@ -7,8 +7,21 @@ public class OrchestraEnsemble extends Ensemble {
     }
 
     public void updateMusicianRole(){
-      
-        
+        EnsembleFactory factory = EnsembleFactoryRegistry.getFactory(this);
+        java.util.Iterator<Musician> it = super.getMusicians();
+        boolean anyInvalid = false;
+        while (it.hasNext()) {
+            Musician m = it.next();
+            int role = m.getRole();
+            if (!factory.isValidRole(role)) {
+                System.out.println("Warning: Musician " + m.getMID() + " has invalid role " + role + ", resetting to 0.");
+                m.setRole(0);
+                anyInvalid = true;
+            }
+        }
+        // if (!anyInvalid) {
+        //     System.out.println("All musician roles are valid for this orchestra.");
+        // }
     }
     @Override
     public void showEnsemble(){

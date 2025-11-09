@@ -1,3 +1,3 @@
-public class Memento {
-    
+public interface Memento{
+    void restore();
 }

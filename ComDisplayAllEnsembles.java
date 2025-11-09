@@ -15,12 +15,12 @@ public class ComDisplayAllEnsembles implements Command {
         for (Ensemble ensemble : ensembles) {
             EnsembleFactory factory = EnsembleFactoryRegistry.getFactory(ensemble);
             String typeName = factory.getEnsembleType();
-            typeMap.putIfAbsent(typeName, new StringBuilder(typeName + " "));
+            typeMap.putIfAbsent(typeName, new StringBuilder("\n" + typeName + " : "));
             typeMap.get(typeName).append(ensemble.getName())
                                  .append("(").append(ensemble.getEnsembleID()).append(") ");
         }
         for (StringBuilder sb : typeMap.values()) {
-            System.out.println(sb.toString().trim());
+            System.out.println("\n" + sb.toString().trim());
         }
     }
        
@@ -29,4 +29,8 @@ public class ComDisplayAllEnsembles implements Command {
         // No undo action for displaying all ensembles
     }
     
+    @Override                                                       
+    public String description() {
+        return "Display All Ensembles";
+}
 }

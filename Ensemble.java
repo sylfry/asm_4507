@@ -23,21 +23,18 @@ public abstract class Ensemble {
 
     public void addMusician(Musician m){
         this.musicians.add(m);
+        Registry.getMusicianEnsembleMap().put(m.getMID(), this);
     }
 
     public void dropMusician(Musician m){
-        // Iterator<Musician> it = this.musicians.iterator();
-        // while (it.hasNext()) {
-        //     if (it.next().getMID().equals(m.getMID())) {
-        //         it.remove();
-        //         break;
-        //     }
-        // }
+        // Ensemble currentEnsemble = Registry.getMusicianEnsembleMap().get(m.getMID());
+        // Registry.getMusicianEnsembleMap().remove(m.getMID(), currentEnsemble);
+        Registry.getMusicianEnsembleMap().remove(m.getMID(), this);
         this.musicians.remove(m);  //只删除当前对象，如果ID重复不会全部删除，上面注释的可以根据ID全部删除
     }
 
     public Iterator<Musician> getMusicians(){
-        return this.musicians.iterator();
+        return this.musicians.iterator();  
     }
             // 在需要List的地方可以这样转换：
         //Iterator<Musician> iterator = ensemble.getMusicians();

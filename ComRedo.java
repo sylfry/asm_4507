@@ -1,12 +1,25 @@
+import java.util.Stack;
+
 public class ComRedo implements Command {
-      @Override
+    private Caretaker caretaker;
+
+    public ComRedo(Caretaker caretaker) {
+        this.caretaker = caretaker;
+    }
+
+    @Override
     public void execute() {
-        // Implementation for showing the list
-    }  
-    
+        caretaker.redo();
+       
+    }
+
     @Override
     public void undo() {
-        // Implementation for undoing the show list action, if applicable
+        
+    }
 
+    @Override
+    public String description() {
+        return "Redo last undone command";
     }
 }

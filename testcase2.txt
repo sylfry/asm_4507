@@ -1,0 +1,54 @@
+c
+o
+E001
+SYO
+a
+m001, Chole Chua
+1
+a
+m002, Mischa Maisky
+2
+se
+cn
+NEW SYO
+se
+c
+j
+E002
+BLUE NOTE
+s
+E002
+a
+m101, Herbie Hancock
+1
+a
+m102, John Coltrane
+2
+a
+m103, Buddy Rich
+3
+se
+d
+m999
+m
+m999
+s
+E003
+cn
+Ghost Band
+se
+u
+se
+u
+se
+u
+se
+sa
+r
+se
+r
+se
+r
+se
+sa
+x
