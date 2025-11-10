@@ -1,4 +1,4 @@
-public class ComChangeEnsembleName implements Command {
+public class ComChangeEnsembleName implements UndoableCommand {
     private Ensemble ensemble;
     private String newName;
     //private String oldName;

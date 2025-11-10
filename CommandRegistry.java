@@ -7,7 +7,6 @@ import java.util.LinkedHashMap;
 public class CommandRegistry {
     private String comID;
     private String comName;
-    private Command comHandle;
     private final Map<String, Function<Scanner, Command>> handlerMap = new HashMap<>();
     private final Map<String, String> IDNameMap = new LinkedHashMap<>();
     public CommandRegistry() {
@@ -19,7 +18,7 @@ public class CommandRegistry {
         IDNameMap.put("se", "show ensemble");
         IDNameMap.put("sa", "display all ensembles");
         IDNameMap.put("cn", "change ensemble's name");
-        IDNameMap.put("u", "undo");
+        IDNameMap.put("u", "undo"); 
         IDNameMap.put("r", "redo");      
         IDNameMap.put("l", "undo/redo");
         IDNameMap.put("x", "exit system");
@@ -42,12 +41,6 @@ public class CommandRegistry {
     }
     public String getComName() {
         return comName;
-    }
-    public void setComHandle(Command handle) {
-        this.comHandle = handle;
-    }
-    public Command getComHandle() {
-        return comHandle;
     }
 
     public String getCommandMenu() {

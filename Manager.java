@@ -2,9 +2,7 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Iterator;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Arrays;
+
 import java.util.function.Function;
 
 public class Manager {
@@ -15,7 +13,7 @@ public class Manager {
     private Caretaker caretaker=new Caretaker();
     private EnsembleFactory factory;
     private CommandRegistry commandRegistry = new CommandRegistry();
-    private final Set<String> recordableIds = new HashSet<>(Arrays.asList("c","a","m","d","cn"));
+    // Decide whether a command should be recorded by checking if it implements UndoableCommand
     
     
     public Manager() {
@@ -57,13 +55,12 @@ public class Manager {
                 try {
                     Command created = handler.apply(scanner);
                     if (created != null) {
-                        if (recordableIds.contains(input)) {
+                        if (created instanceof UndoableCommand) {
                             caretaker.execute(created);
                             // sync currentEnsemble from undo history after recording a mutation
                             syncCurrentEnsembleFromHistory();
                         } else {
                             created.execute();
-                           
                         }
                     }
                 } catch (Exception e) {
@@ -101,6 +98,22 @@ public class Manager {
                 System.out.println("\nThe current ensemble is changed to " + currentEnsemble.getEnsembleID() + " " + currentEnsemble.getName() + ".");
             }
         }
+    }
+
+    // Allow commands to set current ensemble via receiver pattern
+    public void setCurrentEnsemble(Ensemble ensemble) {
+        this.currentEnsemble = ensemble;
+        if (currentEnsemble == null) {
+            System.out.println("\nThe current ensemble is changed to none.");
+        } else {
+            factory = EnsembleFactoryRegistry.getFactory(currentEnsemble);
+            System.out.println("\nThe current ensemble is changed to " + currentEnsemble.getEnsembleID() + " " + currentEnsemble.getName() + ".");
+        }
+    }
+
+    // provide read access for commands to capture previous state
+    public Ensemble getCurrentEnsemble() {
+        return this.currentEnsemble;
     }
     public Command handleCreateEnsemble(Scanner scanner) {
         // Implementation for creating ensemble
@@ -191,8 +204,7 @@ public class Manager {
             }
         }
         if (foundEnsemble != null) {
-            commandFactory.createSetEnsembleCommand(currentEnsemble,foundEnsemble).execute();
-            currentEnsemble = foundEnsemble;
+            commandFactory.createSetEnsembleCommand(this, foundEnsemble).execute();
         } else {
             System.out.println("\nEnsemble " + eid + " is not found!");
         }

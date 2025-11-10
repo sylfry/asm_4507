@@ -1,4 +1,4 @@
-public class ComModifyInstrument implements Command {
+public class ComModifyInstrument implements UndoableCommand {
     private Musician musician;
     private int newInstrument;
     private int oldInstrument;

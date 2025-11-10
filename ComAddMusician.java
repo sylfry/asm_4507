@@ -1,4 +1,4 @@
-public class ComAddMusician implements Command {
+public class ComAddMusician implements UndoableCommand {
 	private Ensemble ensemble;
 	private Musician musician;
 

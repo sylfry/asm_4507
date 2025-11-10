@@ -1,5 +1,4 @@
 import java.util.List;
-import javax.swing.text.Caret;
 public interface CommandFactory {
     Command createAddMusicianCommand(Ensemble ensemble, Musician musician);
     Command createDeleteMusicianCommand(Ensemble ensemble, Musician musician);
@@ -9,7 +8,7 @@ public interface CommandFactory {
     Command createRedoCommand(Caretaker caretaker);
     Command createDisplayAllEnsemblesCommand(List<Ensemble> ensembles);
     Command createShowEnsembleCommand(Ensemble ensemble);
-    Command createSetEnsembleCommand(Ensemble currentEnsemble, Ensemble foundEnsemble);
+    Command createSetEnsembleCommand(Manager manager, Ensemble foundEnsemble);
     Command createShowListCommand(Caretaker caretaker);
     Command createEnsembleCommand(EnsembleFactory factory, String eid, String ename, List<Ensemble> ensembles);
   

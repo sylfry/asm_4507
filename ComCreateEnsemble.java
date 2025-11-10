@@ -1,5 +1,5 @@
 import java.util.List;
-public class ComCreateEnsemble implements Command {
+public class ComCreateEnsemble implements UndoableCommand {
     private EnsembleFactory factory;
     private List<Ensemble> ensembles;
     private String ensembleId;

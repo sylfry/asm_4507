@@ -1,0 +1,223 @@
+@startuml
+left to right direction
+skinparam linetype ortho
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam MaxMessageSize 120
+skinparam Padding 12
+title MEMS — Class Diagram (简化)
+
+class Manager {
+  - List<Ensemble> ensembles
+  - Ensemble currentEnsemble
+  - CommandFactory commandFactory
+  - Caretaker caretaker
+  - EnsembleFactory factory
+  - CommandRegistry commandRegistry
+  + chooseFunction()
+  + handleSetEnsemble(scanner)
+  + setCurrentEnsemble(ensemble)
+  + getCurrentEnsemble()
+}
+
+interface Command {
+  + execute()
+  + undo()
+  + description()
+  + getTargetEnsembleId()
+}
+
+interface CommandFactory
+
+' Grouped factory methods (color-coded)
+/' place factory groups on the left to reduce crossings '/
+package "Factory Methods (undoable)" #CCFFCC as UF {
+  class UndoableFactoryMethods {
+    + createEnsembleCommand(EnsembleFactory, String, String, List)
+    + createAddMusicianCommand(Ensemble, Musician)
+    + createModifyInstrumentCommand(Musician,int)
+    + createDeleteMusicianCommand(Ensemble, Musician)
+    + createChangeEnsembleNameCommand(Ensemble, String)
+  }
+}
+
+package "Factory Methods (non-undoable)" #F0F0F0 as NF {
+  class NonUndoableFactoryMethods {
+    + createDisplayAllEnsemblesCommand(List<Ensemble>)
+    + createShowEnsembleCommand(Ensemble)
+    + createSetEnsembleCommand(Manager, Ensemble)
+    + createShowListCommand(Caretaker)
+    + createUndoCommand(Caretaker)
+    + createRedoCommand(Caretaker)
+  }
+}
+
+/' group factory packages near each other to reduce crossings '/
+CommandFactory ..> UndoableFactoryMethods
+CommandFactory ..> NonUndoableFactoryMethods
+
+layout_long = true
+
+' Place CommandImpl near center-right; restrict connector crossing by using hidden anchors
+class CommandImpl {
+  + createAddMusicianCommand(...)
+  + createSetEnsembleCommand(Manager, Ensemble)
+  ...
+}
+
+CommandImpl ..|> CommandFactory
+
+' show method param dependencies as usage arrows (keep tightly grouped)
+CommandImpl ..> Ensemble
+CommandImpl ..> Musician
+CommandImpl ..> Caretaker
+CommandImpl ..> EnsembleFactory
+CommandImpl ..> List
+
+/' Place commands in right column; subgroup undoable commands near Caretaker '/
+package "commands" as CMD {
+  node "" as cmd_anchor #White
+  class ComAddMusician
+  class ComDeleteMusician
+  class ComModifyInstrument
+  class ComChangeEnsembleName {
+    - Ensemble ensemble
+    - String newName
+    - NameMemento memento
+    + ComChangeEnsembleName(Ensemble, String)
+    + execute()
+    + undo()
+  }
+
+  class ComModifyInstrument {
+    - Musician musician
+    - int newInstrument
+    - InstrumentMemento memento
+    + ComModifyInstrument(Musician, int)
+    + execute()
+    + undo()
+  }
+
+  class ComSetEnsemble {
+    - Manager manager
+    - Ensemble foundEnsemble
+    - Ensemble previousEnsemble
+    + ComSetEnsemble(Manager, Ensemble)
+    + execute()
+    + undo()
+  }
+}
+
+' Invisible anchors to force relative positions: left, center, right
+node LEFT_POS <<hidden>>
+node CENTER_POS <<hidden>>
+node RIGHT_POS <<hidden>>
+
+' Connect anchors to command classes (hidden) to nudge layout: left->ComDeleteMusician, center->ComChangeEnsembleName, right->ComModifyInstrument
+LEFT_POS -[hidden]-> ComDeleteMusician
+CENTER_POS -[hidden]-> ComChangeEnsembleName
+RIGHT_POS -[hidden]-> ComModifyInstrument
+
+' show that Command is implemented by representative commands
+Command <|.. ComAddMusician
+Command <|.. ComDeleteMusician
+Command <|.. ComModifyInstrument
+Command <|.. ComChangeEnsembleName
+Command <|.. ComSetEnsemble
+
+ComSetEnsemble --> Manager : uses / receiver
+ComAddMusician --> Ensemble
+ComDeleteMusician --> Ensemble
+ComModifyInstrument --> Musician
+
+' Commands that use concrete mementos
+ComChangeEnsembleName --> NameMemento
+ComModifyInstrument --> InstrumentMemento
+
+note right of ComAddMusician
+  ... other ComXxx classes (ComShowEnsemble, ComCreateEnsemble,
+  ComChangeEnsembleName, ComShowList, ComDisplayAllEnsembles, etc.)
+end note
+
+class Ensemble {
+  - String ensembleID
+  - String name
+  - Iterator<Musician> musicians
+  + getEnsembleID()
+  + getName()
+  + showEnsemble()
+}
+
+class OrchestraEnsemble
+class JazzBandEnsemble
+OrchestraEnsemble --|> Ensemble
+JazzBandFactory --|> AbstractEnsembleFactory
+
+OrchestraEnsemble --|> Ensemble
+JazzBandEnsemble --|> Ensemble
+
+interface EnsembleFactory {
+  + createMusician(String)
+  + isValidRole(int)
+  + showRoleName()
+  + getEnsembleType()
+}
+
+class AbstractEnsembleFactory
+AbstractEnsembleFactory ..|> EnsembleFactory
+class OrchestraFactory
+class JazzBandFactory
+OrchestraFactory --|> AbstractEnsembleFactory
+JazzBandFactory --|> AbstractEnsembleFactory
+
+class EnsembleFactoryRegistry {
+  + getFactory(Ensemble)
+  + getFactoryByKey(String)
+}
+
+class Musician {
+  - String mid
+  - String name
+  - int role
+}
+
+class Memento {
+  - String snapshotId
+  - ... // snapshot data
+}
+
+class NameMemento
+class InstrumentMemento
+NameMemento ..|> Memento
+InstrumentMemento ..|> Memento
+
+class Caretaker {
+  - Stack<Memento> undoStack
+  - Stack<Memento> redoStack
+  + execute(Command)
+  + undo()
+  + redo()
+}
+
+' Tidy main relationships: place Manager in center, factories to left, commands to right
+Manager --> CommandFactory
+Manager --> Caretaker
+Manager --> EnsembleFactoryRegistry
+Manager --> "0..*" Ensemble
+Caretaker --> Memento
+
+' add invisible layout anchors to reduce crossing: align UF and NF to left, CommandImpl mid-right, CMD right
+UF -[hidden]- NF
+UF -[hidden]- CommandImpl
+CommandImpl -[hidden]- CMD
+
+/' Reposition note to be close to commands '/
+note right of ComAddMusician
+  ... other ComXxx classes (ComShowEnsemble, ComCreateEnsemble,
+  ComChangeEnsembleName, ComShowList, ComDisplayAllEnsembles, etc.)
+end note
+
+Command --> "many" : implementations
+
+@enduml

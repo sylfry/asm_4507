@@ -1,4 +1,4 @@
-public class ComDeleteMusician implements Command {
+public class ComDeleteMusician implements UndoableCommand {
     
     private Musician deletedMusician;
     private Ensemble currentEnsemble;

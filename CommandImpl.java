@@ -1,5 +1,4 @@
 import java.util.List;
-import javax.swing.text.Caret;
 public  class CommandImpl implements CommandFactory {
     @Override
     public Command createAddMusicianCommand(Ensemble ensemble, Musician musician) {
@@ -34,8 +33,8 @@ public  class CommandImpl implements CommandFactory {
         return new ComShowEnsemble(ensemble);
     }
     @Override
-    public Command createSetEnsembleCommand(Ensemble currentEnsemble, Ensemble foundEnsemble) {
-        return new ComSetEnsemble(currentEnsemble, foundEnsemble);
+    public Command createSetEnsembleCommand(Manager manager, Ensemble foundEnsemble) {
+        return new ComSetEnsemble(manager, foundEnsemble);
     }
     @Override
     public Command createShowListCommand(Caretaker caretaker) {
