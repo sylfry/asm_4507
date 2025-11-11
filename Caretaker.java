@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Stack;
 
 public class Caretaker {
@@ -47,17 +48,22 @@ public class Caretaker {
     public Stack<Command> getRedoList() {
         return redoList;
     }
-    
+
      public Ensemble getHistoryEnsemble(){
         return redoList.isEmpty()? null : ((UndoableCommand)redoList.peek()).getEnsemble();
     }
-    
+    //after redo, get current ensemble, as there may be a set ensemble command, need to get next ensemble
     public Ensemble getNextEnsemble(){
         return undoList.isEmpty() ? null : ((UndoableCommand)undoList.peek()).getEnsemble();
     }
-    //after undo, get current ensemble
-    public Ensemble getCurrentEnsemble(){
-        return undoList.isEmpty() ? null : ((UndoableCommand)redoList.peek()).getPreEnsemble();
+    //after undo, get current ensemble, as there may be a set ensemble command, need to get previous ensemble
+    public Ensemble getCurrentEnsemble(List<Ensemble> ensembles){
+        Ensemble e = undoList.isEmpty() ? null : ((UndoableCommand)redoList.peek()).getPreEnsemble();
+        //判断e在不在ensembles里
+        if (e != null && !ensembles.contains(e)) {
+            return getNextEnsemble();
+        }
+        return e;
     }
  
    

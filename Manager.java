@@ -27,11 +27,12 @@ public class Manager {
         commandRegistry.registerHandler("s", sc -> { handleSetEnsemble(sc); return null; });
         commandRegistry.registerHandler("u", sc -> { 
             caretaker.undo(); 
-            setCurrentEnsemble(caretaker.getCurrentEnsemble());
+            setCurrentEnsemble(caretaker.getCurrentEnsemble(ensembles));
             return null; });
         commandRegistry.registerHandler("r", sc -> { 
             caretaker.redo();  
-            setCurrentEnsemble(caretaker.getCurrentEnsemble());
+            //本身没有删除乐团的功能，所以没特别像UNDO一样处理
+            setCurrentEnsemble(caretaker.getNextEnsemble());
             return null; });
         commandRegistry.registerHandler("l", sc -> { commandFactory.createShowListCommand(caretaker).execute(); return null; });
     }
