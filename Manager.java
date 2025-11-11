@@ -13,9 +13,6 @@ public class Manager {
     private Caretaker caretaker=new Caretaker();
     private EnsembleFactory factory;
     private CommandRegistry commandRegistry = new CommandRegistry();
-  
-   
-
        
     public Manager() {
         // register handlers: input -> (Scanner -> Command)
@@ -30,12 +27,11 @@ public class Manager {
         commandRegistry.registerHandler("s", sc -> { handleSetEnsemble(sc); return null; });
         commandRegistry.registerHandler("u", sc -> { 
             caretaker.undo(); 
-            setCurrentEnsemble(caretaker.getCurrentEnsemble());             
-            return null; });       
+            setCurrentEnsemble(caretaker.getCurrentEnsemble());
+            return null; });
         commandRegistry.registerHandler("r", sc -> { 
             caretaker.redo();  
             setCurrentEnsemble(caretaker.getCurrentEnsemble());
-          
             return null; });
         commandRegistry.registerHandler("l", sc -> { commandFactory.createShowListCommand(caretaker).execute(); return null; });
     }
@@ -64,17 +60,15 @@ public class Manager {
                     Command created = handler.apply(scanner);
                     if (created != null) {
                         if (created instanceof UndoableCommand) {
-                       
                             caretaker.execute(created);
+                            // sync currentEnsemble from undo history after recording a mutation
                             setCurrentEnsemble(created.getEnsemble());
                         } else {
-               
                             created.execute();
                         }
                     }
                 } catch (Exception e) {
-                    System.out.println("\nError 1 handling command: " + e.getMessage());
-                    e.printStackTrace(System.out);
+                    System.out.println("\nError handling command: " + e.getMessage());
                 }
             } else {
                 System.out.println("\nInvalid command. Please try again.");
@@ -90,47 +84,28 @@ public class Manager {
         }
     }
 
-    // Synchronize Manager.currentEnsemble with the top of the undo history (if any).
-    // private void syncCurrentEnsembleFromHistory() {
-    //     Ensemble next = null;
-    //     if (!caretaker.getUndoList().isEmpty()) {
-    //         next = caretaker.getUndoList().peek().getEnsemble();
-    //     }
-    //     String currentId = currentEnsemble == null ? null : currentEnsemble.getEnsembleID();
-    //     String nextId = next == null ? null : next.getEnsembleID();
-    //     //Ensemble previousEnsemble = caretaker.getRedoList().isEmpty() ? null : caretaker.getRedoList().peek().getEnsemble();
-    //     boolean changed = (currentId == null && nextId != null) || (currentId != null && nextId == null) || (currentId != null && !currentId.equals(nextId));
-    //     if (changed) {
-    //         currentEnsemble = next;
-    //         if (currentEnsemble == null) {
-    //             System.out.println("\nThe current ensemble is changed to none.");
-    //         } else {
-    //             factory = EnsembleFactoryRegistry.getFactory(currentEnsemble);
-    //             System.out.println("\nThe current ensemble is changed to " + currentEnsemble.getEnsembleID() + " " + currentEnsemble.getName() + ".");
-    //         }
-    //     }
-    // }
+   
 
     // Allow commands to set current ensemble via receiver pattern
     public void setCurrentEnsemble(Ensemble ensemble) {
-        if (this.currentEnsemble == ensemble) {
-            return; // No change
+        if(this.currentEnsemble==ensemble) {
+            return;
         }
         this.currentEnsemble = ensemble;
         if (currentEnsemble == null) {
             System.out.println("\nThe current ensemble is changed to none.");
         } else {
-            //factory = EnsembleFactoryRegistry.getFactory(currentEnsemble);
-        
+            factory = EnsembleFactoryRegistry.getFactory(currentEnsemble);
             System.out.println("\nThe current ensemble is changed to " + currentEnsemble.getEnsembleID() + " " + currentEnsemble.getName() + ".");
         }
     }
-    public List<Ensemble> getEnsembles() {
-        return this.ensembles;
-    }       
 
+    // provide read access for commands to capture previous state
     public Ensemble getCurrentEnsemble() {
         return this.currentEnsemble;
+    }
+    public List<Ensemble> getEnsembles() {
+        return this.ensembles;
     }
     public Command handleCreateEnsemble(Scanner scanner) {
         // Implementation for creating ensemble

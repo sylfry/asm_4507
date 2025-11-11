@@ -12,27 +12,22 @@ public class ComSetEnsemble implements Command {
 
     @Override
     public void execute() {
-       
-        if(foundEnsemble!=previousEnsemble) {
-            System.out.println("Changed current ensemble to " + foundEnsemble.getEnsembleID() + ".");
-        }
-         manager.setCurrentEnsemble(foundEnsemble);
-       
+        manager.setCurrentEnsemble(foundEnsemble);
+        System.out.println("Changed current ensemble to " + foundEnsemble.getEnsembleID() + ".");
     }
 
 
     @Override
     public void undo() {
         manager.setCurrentEnsemble(previousEnsemble);
-   
         System.out.println("Reverted current ensemble to " + (previousEnsemble == null ? "none" : previousEnsemble.getEnsembleID()) + ".");
     }
-    @Override
-    public Ensemble getEnsemble() {
+
+    public Ensemble getFoundEnsemble() {
         return foundEnsemble;
     }
 
-    public Ensemble getPreviousEnsemble() {
+    public Ensemble getPreEnsemble() {
         return previousEnsemble;
     }
     @Override

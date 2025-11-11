@@ -47,9 +47,8 @@ public class Caretaker {
     public Stack<Command> getRedoList() {
         return redoList;
     }
-
     
-    public Ensemble getHistoryEnsemble(){
+     public Ensemble getHistoryEnsemble(){
         return redoList.isEmpty()? null : ((UndoableCommand)redoList.peek()).getEnsemble();
     }
     
@@ -60,8 +59,6 @@ public class Caretaker {
     public Ensemble getCurrentEnsemble(){
         return undoList.isEmpty() ? null : ((UndoableCommand)redoList.peek()).getPreEnsemble();
     }
-    public boolean isChanged(){
-         return getCurrentEnsemble()!=getHistoryEnsemble();
-        
-    }
+ 
+   
 }

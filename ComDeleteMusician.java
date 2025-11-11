@@ -19,11 +19,11 @@ public class ComDeleteMusician implements UndoableCommand {
         currentEnsemble.addMusician(deletedMusician);
         //System.out.println("\nRestored musician " + deletedMusician.getMID() + " to ensemble " + currentEnsemble.getEnsembleID() + ".");
     }
-    public Ensemble getPreEnsemble() {
+    public Ensemble getEnsemble() {
         return currentEnsemble;
     }
-    public Ensemble getEnsemble() {
-        return getPreEnsemble();
+    public Ensemble getPreEnsemble() {
+        return currentEnsemble;
     }
 
     @Override                                                       
