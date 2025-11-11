@@ -31,7 +31,7 @@ public class Manager {
             return null; });
         commandRegistry.registerHandler("r", sc -> { 
             caretaker.redo();  
-            //本身没有删除乐团的功能，所以没特别像UNDO一样处理
+            //本身没有删除乐团的功能，也没有切换乐团的还原操作，所以没特别像UNDO一样处理
             setCurrentEnsemble(caretaker.getNextEnsemble());
             return null; });
         commandRegistry.registerHandler("l", sc -> { commandFactory.createShowListCommand(caretaker).execute(); return null; });
@@ -123,14 +123,15 @@ public class Manager {
                         System.out.println("\nInvalid music type. Available types: " + EnsembleFactoryRegistry.getAvailableKeys());
                         return null;
                     }
-                    if(!ensembles.isEmpty()){
-                        for (Ensemble e : ensembles) {
-                            if (e.getEnsembleID().equals(eid)) {
-                               e.setName(ename);
-                               return null;
-                            }
-                        }
-                        }
+                    // if(!ensembles.isEmpty()){
+                    //     for (Ensemble e : ensembles) {
+                    //         if (e.getEnsembleID().equals(eid)) {
+                    //         //    e.setName(ename);
+                    //         //    return null;
+                    //         return commandFactory.createChangeEnsembleNameCommand(e,ename);
+                    //         }
+                    //     }
+                    //     }
                     return commandFactory.createEnsembleCommand(chosenFactory, eid, ename, this);
     }
     public Command handleAddMusician(Scanner scanner) {

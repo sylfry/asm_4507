@@ -13,7 +13,7 @@ public class ComSetEnsemble implements Command {
     @Override
     public void execute() {
         manager.setCurrentEnsemble(foundEnsemble);
-        System.out.println("Changed current ensemble to " + foundEnsemble.getEnsembleID() + ".");
+       // System.out.println("Changed current ensemble to " + foundEnsemble.getEnsembleID() + ".");
     }
 
 
