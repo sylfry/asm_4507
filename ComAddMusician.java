@@ -28,7 +28,10 @@ public class ComAddMusician implements UndoableCommand {
 		return "Add Musician, " + musician.getMID() + ", " + musician.getName() + ", " + factory.getRoleName(musician.getRole());
 	}
 
-	@Override
+	
+	public Ensemble getPreEnsemble() {
+		return ensemble;
+	}
 	public Ensemble getEnsemble() {
 		return ensemble;
 	}

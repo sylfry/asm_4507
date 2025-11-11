@@ -41,9 +41,9 @@ public  class CommandImpl implements CommandFactory {
         return new ComShowList(caretaker);
     }
     @Override
-    public Command createEnsembleCommand(EnsembleFactory factory, String eid, String ename, List<Ensemble> ensembles) {
-        return new ComCreateEnsemble(factory, eid, ename, ensembles);
-    }   
-   
-    
+    public Command createEnsembleCommand(EnsembleFactory factory, String eid, String ename, Manager manager) {
+        return new ComCreateEnsemble(factory, eid, ename, manager);
+    }
+
+
 }

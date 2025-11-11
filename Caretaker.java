@@ -22,7 +22,7 @@ public class Caretaker {
             cmd.undo();
             redoList.push(cmd);
             System.out.println("\nCommand (" + description + ") is undone.");
-            
+           
         } else {
             System.out.println("\nNothing to undo.");
             
@@ -47,5 +47,21 @@ public class Caretaker {
     public Stack<Command> getRedoList() {
         return redoList;
     }
-   
+
+    
+    public Ensemble getHistoryEnsemble(){
+        return redoList.isEmpty()? null : ((UndoableCommand)redoList.peek()).getEnsemble();
+    }
+    
+    public Ensemble getNextEnsemble(){
+        return undoList.isEmpty() ? null : ((UndoableCommand)undoList.peek()).getEnsemble();
+    }
+    //after undo, get current ensemble
+    public Ensemble getCurrentEnsemble(){
+        return undoList.isEmpty() ? null : ((UndoableCommand)redoList.peek()).getPreEnsemble();
+    }
+    public boolean isChanged(){
+         return getCurrentEnsemble()!=getHistoryEnsemble();
+        
+    }
 }

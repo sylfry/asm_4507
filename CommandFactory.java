@@ -10,7 +10,7 @@ public interface CommandFactory {
     Command createShowEnsembleCommand(Ensemble ensemble);
     Command createSetEnsembleCommand(Manager manager, Ensemble foundEnsemble);
     Command createShowListCommand(Caretaker caretaker);
-    Command createEnsembleCommand(EnsembleFactory factory, String eid, String ename, List<Ensemble> ensembles);
+    Command createEnsembleCommand(EnsembleFactory factory, String eid, String ename, Manager manager);
   
     
 }

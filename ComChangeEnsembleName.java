@@ -26,6 +26,9 @@ public class ComChangeEnsembleName implements UndoableCommand {
        
         return "Change ensemble's name, " + ensemble.getEnsembleID() + ", "+ newName;
 }
+    public Ensemble getPreEnsemble() {
+        return ensemble;
+    }
     public Ensemble getEnsemble() {
         return ensemble;
     }

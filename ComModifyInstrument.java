@@ -27,6 +27,9 @@ public class ComModifyInstrument implements UndoableCommand {
     public Ensemble getEnsemble() {
         return ensemble;
     }
+    public Ensemble getPreEnsemble() {
+        return ensemble;
+    }
 
     @Override                                                       
     public String description() {

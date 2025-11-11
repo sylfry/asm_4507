@@ -5,13 +5,17 @@ public class ComCreateEnsemble implements UndoableCommand {
     private String ensembleId;
     private String ensembleName;
     private Ensemble createdEnsemble;
+    private Manager manager;
 
-   public ComCreateEnsemble(EnsembleFactory factory, String ensembleId, String ensembleName, List<Ensemble> ensembles) {
+
+   public ComCreateEnsemble(EnsembleFactory factory, String ensembleId, String ensembleName, Manager manager) {
         this.factory = factory;
         this.ensembleId = ensembleId;
         this.ensembleName = ensembleName;
-        this.ensembles = ensembles;
+        this.manager = manager;
+        this.ensembles = manager.getEnsembles();
     }
+  
 
     @Override
     public void execute() {
@@ -33,12 +37,12 @@ public class ComCreateEnsemble implements UndoableCommand {
         ensembles.remove(createdEnsemble);
        // System.out.println("Ensemble is removed.");
     }
-    public Ensemble getCreatedEnsemble() {
-        return createdEnsemble;
-    }
-    @Override
     public Ensemble getEnsemble() {
         return createdEnsemble;
+    }
+    
+    public Ensemble getPreEnsemble() {
+        return manager.getCurrentEnsemble()==null ? null : manager.getCurrentEnsemble();
     }
     @Override                                                       
     public String description() {
